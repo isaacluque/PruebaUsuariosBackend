@@ -325,6 +325,9 @@
     <Compile Include="Models\Pruebas_FN_ControlHoras_Result.cs">
       <DependentUpon>Pruebas.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Pruebas_FN_ImagenUnEmpleado_Result.cs">
+      <DependentUpon>Pruebas.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Pruebas_FN_TodosEmpleados_Result.cs">
       <DependentUpon>Pruebas.tt</DependentUpon>
     </Compile>

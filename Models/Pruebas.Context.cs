@@ -273,16 +273,6 @@ namespace WebApplication3.Models
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Pruebas_FN_TodosEmpleados_Result>("[PruebasEntities].[Pruebas_FN_TodosEmpleados]()");
         }
     
-        [DbFunction("PruebasEntities", "Pruebas_FN_ImagenUnEmpleado")]
-        public virtual IQueryable<byte[]> Pruebas_FN_ImagenUnEmpleado(Nullable<int> id)
-        {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("Id", id) :
-                new ObjectParameter("Id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<byte[]>("[PruebasEntities].[Pruebas_FN_ImagenUnEmpleado](@Id)", idParameter);
-        }
-    
         [DbFunction("PruebasEntities", "Pruebas_FN_ControlHoras")]
         public virtual IQueryable<Pruebas_FN_ControlHoras_Result> Pruebas_FN_ControlHoras(Nullable<int> idEmpleado)
         {
@@ -291,6 +281,16 @@ namespace WebApplication3.Models
                 new ObjectParameter("IdEmpleado", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Pruebas_FN_ControlHoras_Result>("[PruebasEntities].[Pruebas_FN_ControlHoras](@IdEmpleado)", idEmpleadoParameter);
+        }
+    
+        [DbFunction("PruebasEntities", "Pruebas_FN_ImagenUnEmpleado")]
+        public virtual IQueryable<Pruebas_FN_ImagenUnEmpleado_Result> Pruebas_FN_ImagenUnEmpleado(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Pruebas_FN_ImagenUnEmpleado_Result>("[PruebasEntities].[Pruebas_FN_ImagenUnEmpleado](@Id)", idParameter);
         }
     }
 }

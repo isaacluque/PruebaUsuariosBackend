@@ -53,7 +53,9 @@ namespace WebApplication3.Controllers
             Respuesta r = new Respuesta();
             try
             {
-                byte[] dd = db.Pruebas_FN_ImagenUnEmpleado(Id).FirstOrDefault();
+                var extension = db.Pruebas_FN_ImagenUnEmpleado(Id).Select(a => a.Extension).FirstOrDefault();
+                
+                byte[] dd = db.Pruebas_FN_ImagenUnEmpleado(Id).Select(e => e.FotografiaEmpleado).FirstOrDefault();
                 if (dd == null)
                 {
                     r.status = true;
@@ -62,7 +64,7 @@ namespace WebApplication3.Controllers
                 else
                 {
                     var imreBase64Data = Convert.ToBase64String(dd);
-                    string imgDataUrl = string.Format("data:video/mp4;base64,{0}", imreBase64Data);
+                    string imgDataUrl = string.Format("data:" + extension+ ";base64,{0}", imreBase64Data);
                     r.status = true;
                     r.message = imgDataUrl;
                 }
@@ -180,6 +182,7 @@ namespace WebApplication3.Controllers
                 }
                 else
                 {
+                    
                     var nombreMayuscula = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(NombreEmpleado);
                     var empleado = (from d in db.Pruebas_EMP where d.Id == Id select d).FirstOrDefault();
                     var nombre = nombreMayuscula != "" ? nombreMayuscula : empleado.NombreEmpleado.ToString();
@@ -187,30 +190,39 @@ namespace WebApplication3.Controllers
                     var sexo = SexoEmpleado != "" ? SexoEmpleado : empleado.SexoEmpleado.ToString();
                     var idpuesto = IdPuesto != 0 ? IdPuesto : empleado.IdPuesto;
 
-                    string root = System.Web.HttpContext.Current.Server.MapPath("~/App_Data");
-                    var provider = new MultipartFormDataStreamProvider(root);
                     try
                     {
-                        // Read the form data.
-                        byte[] data = null;
-                        await Request.Content.ReadAsMultipartAsync(provider);
-                        // This illustrates how to get the file names.
-                        foreach (MultipartFileData file in provider.FileData)
+                        if (Request.Content.Headers.ContentType == null)
                         {
-                            Trace.WriteLine(file.Headers.ContentDisposition.FileName);//get FileName
-                            Trace.WriteLine("Server file path: " + file.LocalFileName);//get File Path
-                            using (MemoryStream ms = new MemoryStream())
-                            {
-                                using (FileStream fs = File.OpenRead(file.LocalFileName))
-                                {
-                                    await fs.CopyToAsync(ms);
-                                }
-                                data = ms.ToArray();
-                            }
+                            db.Pruebas_EditarEmpleado(Id, nombre, edad, sexo, idpuesto, null, null);
+                            r.status = true;
+                            r.message = "Usuario actualizado exitosamente.";
                         }
-                        db.Pruebas_EditarEmpleado(Id, nombre, edad, sexo, idpuesto, data, extension);
-                        r.status = true;
-                        r.message = "Usuario actualizado exitosamente.";
+                        else
+                        {
+                            // Read the form data.
+                            string root = System.Web.HttpContext.Current.Server.MapPath("~/App_Data");
+                            var provider = new MultipartFormDataStreamProvider(root);
+                            byte[] data = null;
+                            await Request.Content.ReadAsMultipartAsync(provider);
+                            // This illustrates how to get the file names.
+                            foreach (MultipartFileData file in provider.FileData)
+                            {
+                                Trace.WriteLine(file.Headers.ContentDisposition.FileName);//get FileName
+                                Trace.WriteLine("Server file path: " + file.LocalFileName);//get File Path
+                                using (MemoryStream ms = new MemoryStream())
+                                {
+                                    using (FileStream fs = File.OpenRead(file.LocalFileName))
+                                    {
+                                        await fs.CopyToAsync(ms);
+                                    }
+                                    data = ms.ToArray();
+                                }
+                            }
+                            db.Pruebas_EditarEmpleado(Id, nombre, edad, sexo, idpuesto, data, extension);
+                            r.status = true;
+                            r.message = "Usuario actualizado exitosamente.";
+                        }
                         return Request.CreateResponse(HttpStatusCode.OK, r);
                         
                     }

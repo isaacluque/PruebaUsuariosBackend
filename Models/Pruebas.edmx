@@ -123,6 +123,7 @@
             <CollectionType>
               <RowType>
                 <Property Name="FotografiaEmpleado" Type="varbinary(max)" />
+                <Property Name="Extension" Type="nvarchar" MaxLength="50" />
               </RowType>
             </CollectionType>
           </ReturnType>
@@ -407,11 +408,11 @@
             <Parameter Name="IdPuesto" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Pruebas_FN_TodosEmpleados" IsComposable="true" ReturnType="Collection(PruebasModel.Pruebas_FN_TodosEmpleados_Result)" />
-          <FunctionImport Name="Pruebas_FN_ImagenUnEmpleado" IsComposable="true" ReturnType="Collection(Binary)">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="Pruebas_FN_ControlHoras" IsComposable="true" ReturnType="Collection(PruebasModel.Pruebas_FN_ControlHoras_Result)">
           <Parameter Name="IdEmpleado" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Pruebas_FN_ImagenUnEmpleado" IsComposable="true" ReturnType="Collection(PruebasModel.Pruebas_FN_ImagenUnEmpleado_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
@@ -439,6 +440,10 @@
           <Property Type="Time" Name="HoraEntrada" Nullable="false" />
           <Property Type="Time" Name="HoraSalida" Nullable="true" />
           <Property Type="DateTime" Name="Fecha" Nullable="false" Precision="10" />
+        </ComplexType>
+        <ComplexType Name="Pruebas_FN_ImagenUnEmpleado_Result">
+          <Property Type="Binary" Name="FotografiaEmpleado" Nullable="true" />
+          <Property Type="String" Name="Extension" Nullable="true" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -571,7 +576,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="Pruebas_FN_ImagenUnEmpleado" FunctionName="PruebasModel.Store.Pruebas_FN_ImagenUnEmpleado" />
           <FunctionImportMapping FunctionImportName="Pruebas_FN_ControlHoras" FunctionName="PruebasModel.Store.Pruebas_FN_ControlHoras">
             <ResultMapping>
               <ComplexTypeMapping TypeName="PruebasModel.Pruebas_FN_ControlHoras_Result">
@@ -580,6 +584,14 @@
                 <ScalarProperty Name="HoraEntrada" ColumnName="HoraEntrada" />
                 <ScalarProperty Name="HoraSalida" ColumnName="HoraSalida" />
                 <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Pruebas_FN_ImagenUnEmpleado" FunctionName="PruebasModel.Store.Pruebas_FN_ImagenUnEmpleado">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PruebasModel.Pruebas_FN_ImagenUnEmpleado_Result">
+                <ScalarProperty Name="FotografiaEmpleado" ColumnName="FotografiaEmpleado" />
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
