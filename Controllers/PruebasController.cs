@@ -114,56 +114,6 @@ namespace WebApplication3.Controllers
             return HoraConcatenada;
         }
 
-        ////Arreglar para que funcione enviar la foto >:v
-        //[HttpPut]
-        //[Route("editar-usuario")]
-        //public async Task<HttpResponseMessage> PostFormData()
-        //{
-        //    // Check if the request contains multipart/form-data.
-        //    if (!Request.Content.IsMimeMultipartContent())
-        //    {
-        //        throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
-        //    }
-
-        //    string root = System.Web.HttpContext.Current.Server.MapPath("~/App_Data");
-        //    var provider = new MultipartFormDataStreamProvider(root);
-
-        //    try
-        //    {
-        //        if (provider.Contents == null)
-        //        {
-        //            return Request.CreateResponse(HttpStatusCode.NotFound);
-        //        }
-        //        else
-        //        {
-        //        await Request.Content.ReadAsMultipartAsync(provider);
-
-        //        byte[] data = null;
-        //        // This illustrates how to get the file names.
-        //        foreach (MultipartFileData file in provider.FileData)
-        //        {
-        //            Trace.WriteLine(file.Headers.ContentDisposition.FileName);//get FileName
-        //            Trace.WriteLine("Server file path: " + file.LocalFileName);//get File Path
-
-        //            using (FileStream fs = File.OpenRead(file.LocalFileName))
-        //            {
-        //                data = new byte[fs.Length];
-        //                fs.Read(data, 0, data.Length);
-        //            }
-
-        //        }
-        //            return Request.CreateResponse(HttpStatusCode.OK, provider.Contents);
-
-        //        }
-        //        // Read the form data.
-        //    }
-        //    catch (System.Exception e)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
-        //    }
-        //}
-
-
         /////////////////////////Editar Usuario y su foto//////////////////////////////
         [HttpPut]
         [Route("editar-usuario/{Id}")]
@@ -265,7 +215,7 @@ namespace WebApplication3.Controllers
             }
         }
 
-/////////////////////////Elimnar Usuario//////////////////////////////
+        /////////////////////////Elimnar Usuario//////////////////////////////
         [HttpDelete]
         [Route("eliminar-usuario/{Id}")]
         public HttpResponseMessage DeleteUsuario(int Id)
